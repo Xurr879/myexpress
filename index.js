@@ -1,4 +1,5 @@
 // index.js
+require('dotenv').config();
 const express = require('express');
 const line = require('@line/bot-sdk');
 
@@ -6,8 +7,8 @@ const app = express();
 
 // ตั้งค่าจาก LINE Developers Console
 const config = {
-  channelAccessToken: 'tQzLIvlx7muSgESigGJ5rTSvBsam/DauEXdQ1bF57+A8pdn9AKCnsjZEpMlJd0PfYA3lY4CK7UKHTV8IrbhEDQIpUvUC0nOTe+M1ByLb1RZXr4Bdg84w9tvIi8lRrT4W7IUdmlMKMw6UUJYKx9VMTgdB04t89/1O/w1cDnyilFU=',
-  channelSecret: '576d64cc394127ac3f3cbebb58f02bc5'
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || "",
+  channelSecret: process.env.LINE_CHANNEL_SECRET || ""
 };
 
 app.use('/webhook', line.middleware(config));
@@ -31,8 +32,12 @@ function handleEvent(event) {
   });
 }
 
+app.get('/', (req, res) => {
+  res.send('hello world, Bigmo');
+});
+
 const client = new line.Client(config);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
